@@ -3,8 +3,8 @@ Students were put into groups of 4 and asked to solve the continuous cartpole pr
 
 # ACME-GymEnvs
 
-# Barebones Installation Guide
-Environments here were built based off of Gym version 0.10.4, which was the latest version as of March 2018.
+### Barebones Installation Guide
+The Environments here were initially built based off of Gym version 0.10.4, which was the latest version as of March 2018.
 
 Make sure you have gym installed following the instructions found [here](https://github.com/openai/gym) or [here](https://gym.openai.com/).
 
@@ -44,7 +44,7 @@ See the .py example [here](https://github.com/MitchProbst/ACME-GymEnvs/blob/mast
 
 See the jupyter example [here](https://github.com/MitchProbst/ACME-GymEnvs/blob/master/example.ipynb).
 
-# Important Details
+### Important Details
 1) Gym is designed to step at .02 second intervals, so the time elapsed from one step to another is .02 seconds. You might have a hard time getting a solver to work right if you do not mimic the .02s stepsize (maybe you can, if so, you are awesome!)
 2) I highly recommend reading the source code for the [CartPoleContinuousEnv](https://github.com/MitchProbst/ACME-GymEnvs/blob/master/acme_gym/envs/cartpole_continuous.py#L15) class, it contains relevant information like the variables of our system.
 3) If you look at the source code and see length as 0.5, read the comment, it really means the total length of the pole is 1.
@@ -52,7 +52,7 @@ See the jupyter example [here](https://github.com/MitchProbst/ACME-GymEnvs/blob/
 5) You might also want to figure out how to implement some kind of continuous feedback into your model, you may not be able to perfectly describe the dynamics of the system in any solver you use, but you hopefully can get close.
 6) To see all possible environments and the label called to instantiate them, look [here](https://github.com/MitchProbst/ACME-GymEnvs/blob/master/acme_gym/__init__.py).
 
-# Some Troubleshooting
+### Some Troubleshooting
 Q: I'm getting a `raise NotImplementedError('abstract') NotImplementedError: abstract error`, what should I do?
 A: Try following [this](https://github.com/openai/gym/issues/775) link that suggests downgrading pyglet to version 1.2.4 and see if that fixes your problem.
 
