@@ -25,12 +25,12 @@ class CartPoleContinuousEnv(gym.Env):
         self.total_mass = (self.masspole + self.masscart)
         self.length = 0.5 # actually half the pole's length
         self.polemass_length = (self.masspole * self.length)
-        self.max_force = 20.0
+        self.max_force = 2000.0
         self.tau = 0.02  # seconds between state updates
 
         # Angle at which to fail the episode
-        self.theta_threshold_radians = 12 * 2 * np.pi / 360
-        self.x_threshold = 2.4
+        self.theta_threshold_radians = 360 * 2 * np.pi / 360
+        self.x_threshold = 50
 
         # Angle limit set to 2 * theta_threshold_radians so failing observation is still within bounds
         high = np.array([
@@ -98,22 +98,28 @@ class CartPoleContinuousEnv(gym.Env):
 
     def reset(self):
         # Instantiate the cart almost upright
-        #self.state = np.random.uniform(low=-0.05, high=0.05, size=(4,))
-        self.state = [-0.02895248,  0.02119629,  0.00193978, -0.0246696 ]
+        x = np.random.uniform(low=-3,high=3)
+        x_dot = np.random.uniform(low=-3,high=3)
+        
+        # These should be able to solve without having to flip the pendulum down to the bottom
+        theta = np.random.uniform(low=-np.pi/3, high=np.pi/3)
+        theta_dot = np.random.uniform(low=-np.pi/6,high=np.pi/6)
+        self.state = [x, x_dot, theta, theta_dot]
         self.steps_beyond_done = None
         return np.array(self.state)
 
     def render(self, mode='human'):
-        screen_width = 600
-        screen_height = 400
-
-        world_width = self.x_threshold*2
+        screen_width = 1000
+        world_width = self.x_threshold/4
         scale = screen_width/world_width
-        carty = 100 # TOP OF CART
-        polewidth = 10.0
+        
+        carty = scale / 1.25 # TOP OF CART
+        polewidth = scale / 12
         polelen = scale * 1.0
-        cartwidth = 50.0
-        cartheight = 30.0
+        cartwidth = scale / 2.5
+        cartheight = scale / 4
+        
+        screen_height = round(carty + polewidth + 75)
 
         if self.viewer is None:
             from gym.envs.classic_control import rendering
