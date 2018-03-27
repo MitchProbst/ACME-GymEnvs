@@ -45,7 +45,7 @@ See the .py example [here](https://github.com/MitchProbst/ACME-GymEnvs/blob/mast
 See the jupyter example [here](https://github.com/MitchProbst/ACME-GymEnvs/blob/master/example.ipynb).
 
 ### Important Details
-1) Gym is designed to step at .02 second intervals, so the time elapsed from one step to another is .02 seconds. You might have a hard time getting a solver to work right if you do not mimic the .02s stepsize (maybe you can, if so, you are awesome!)
+1) The environments are designed to step at .02 second intervals, so the time elapsed between steps is .02 seconds. Even if your code takes 3 seconds at each step, the beauty of Gym is that we control time. You might have a hard time getting a solver to work right if you do not mimic the .02s stepsize (maybe you can, if so, you are awesome!)
 2) I highly recommend reading the source code for the [CartPoleContinuousEnv](https://github.com/MitchProbst/ACME-GymEnvs/blob/master/acme_gym/envs/cartpole_continuous.py#L15) class, it contains relevant information like the variables of our system.
 3) If you look at the source code and see length as 0.5, read the comment, it really means the total length of the pole is 1.
 4) One possible solution path is to re-use some of the principles from the [ACME LQR lab](http://www.acme.byu.edu/wp-content/uploads/2018/03/21-Inverted-Pendulum.pdf), but recognize in that lab we used a physical system that assumes a massless rod with a weighted object at the end. Here we are using a rod with mass that has no additional object at the end.
