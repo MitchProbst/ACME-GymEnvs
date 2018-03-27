@@ -1,6 +1,0 @@
-README.md
-ACME_GymEnvs.egg-info/PKG-INFO
-ACME_GymEnvs.egg-info/SOURCES.txt
-ACME_GymEnvs.egg-info/dependency_links.txt
-ACME_GymEnvs.egg-info/requires.txt
-ACME_GymEnvs.egg-info/top_level.txt
