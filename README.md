@@ -48,16 +48,19 @@ See the jupyter example [here](https://github.com/MitchProbst/ACME-GymEnvs/blob/
 1) Gym is designed to step at .02 second intervals, so the time elapsed from one step to another is .02 seconds. You might have a hard time getting a solver to work right if you do not mimic the .02s stepsize (maybe you can, if so, you are awesome!)
 2) I highly recommend reading the source code for the [CartPoleContinuousEnv](https://github.com/MitchProbst/ACME-GymEnvs/blob/master/acme_gym/envs/cartpole_continuous.py#L15) class, it contains relevant information like the variables of our system.
 3) If you look at the source code and see length as 0.5, read the comment, it really means the total length of the pole is 1.
-4) One possible solution path is to re-use some of the principles from the [ACME LQR lab](http://www.acme.byu.edu/wp-content/uploads/2018/03/21-Inverted-Pendulum.pdf), but recognize in that lab we used a "Rickshaw" that assumes a massless rod with a weighted object at the end. Here we are using a rod with mass that has no additional object at the end.
+4) One possible solution path is to re-use some of the principles from the [ACME LQR lab](http://www.acme.byu.edu/wp-content/uploads/2018/03/21-Inverted-Pendulum.pdf), but recognize in that lab we used a physical system that assumes a massless rod with a weighted object at the end. Here we are using a rod with mass that has no additional object at the end.
 5) You might also want to figure out how to implement some kind of continuous feedback into your model, you may not be able to perfectly describe the dynamics of the system in any solver you use, but you hopefully can get close.
 6) To see all possible environments and the label called to instantiate them, look [here](https://github.com/MitchProbst/ACME-GymEnvs/blob/master/acme_gym/__init__.py).
 
 ### Some Troubleshooting
-Q: I'm getting a `raise NotImplementedError('abstract') NotImplementedError: abstract error`, what should I do?
-A: Try following [this](https://github.com/openai/gym/issues/775) link that suggests downgrading pyglet to version 1.2.4 and see if that fixes your problem.
+**Q:** I am getting a `raise NotImplementedError('abstract') NotImplementedError: abstract error`, what should I do?
 
-Q: I am getting an `AssertionError: array(\[ BIG NUMBER ]) (<class 'numpy.ndarray'>) invalid`
-A: The environment is capped so you can't apply forces of insane magnitude (2000 is already really large), if you're trying to apply forces stronger than that, you ought to be refactoring your solution.
+**A:** Try following [this](https://github.com/openai/gym/issues/775) link that suggests downgrading pyglet to version 1.2.4 and see if that fixes your problem.
 
-Q: I can not see the environment when I call `env.render()` even though I am getting no errors, what is going on?
-A: The viewer showing the actual CartPole may not appear at the front of your screen. Check and see if it appeared in the background somewhere, especially if you are using a notebook.
+**Q:** I am getting an `AssertionError: array(\[ BIG NUMBER ]) (<class 'numpy.ndarray'>) invalid`, what should I do?
+
+**A:** The environment is capped so you can not apply forces of insane magnitude (2000 is already really large), if you are trying to apply forces stronger than that, you ought to be refactoring your solution.
+
+**Q:** I can not see the environment when I call `env.render()` even though I am getting no errors, what is going on?
+
+**A:** The viewer showing the actual CartPole may not appear at the front of your screen. Check and see if it appeared in the background somewhere, especially if you are using a notebook.
