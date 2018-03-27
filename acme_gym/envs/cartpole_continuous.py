@@ -104,8 +104,8 @@ class CartPoleContinuousEnv(gym.Env):
     def reset(self):
         # Instantiate the cart with random, reasonable values
         x = np.random.uniform(low=-3,high=3)
-        x_dot = np.random.uniform(low=-3,high=3)
-        theta = np.random.uniform(low=-np.pi/3, high=np.pi/3)
+        x_dot = np.random.uniform(low=-.25,high=.25)
+        theta = np.random.uniform(low=-np.pi/4, high=np.pi/4)
         theta_dot = np.random.uniform(low=-np.pi/6,high=np.pi/6)
         self.state = [x, x_dot, theta, theta_dot]
         
