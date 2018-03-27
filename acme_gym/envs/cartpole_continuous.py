@@ -23,15 +23,18 @@ class CartPoleContinuousEnv(gym.Env):
         self.masscart = 1.0
         self.masspole = 0.1
         self.total_mass = (self.masspole + self.masscart)
-        self.length = 0.5 # actually half the pole's length
+        # For some reason in Gym they define this length to be half of the pole's length
+        self.length = 0.5
         self.polemass_length = (self.masspole * self.length)
         self.max_force = 2000.0
         self.tau = 0.02  # seconds between state updates
 
-        # Angle at which to fail the episode
+        # Angle at which to fail the episode (Irrelevant for Optimal Control)
+        # Note: Changing the size of x_threshold will dynamically change the window-size as well. Smaller values make the cart and pole appear bigger.
         self.theta_threshold_radians = 360 * 2 * np.pi / 360
         self.x_threshold = 50
-
+        
+        
         # Angle limit set to 2 * theta_threshold_radians so failing observation is still within bounds
         high = np.array([
             self.x_threshold * 2,
@@ -39,6 +42,7 @@ class CartPoleContinuousEnv(gym.Env):
             self.theta_threshold_radians * 2,
             np.finfo(np.float32).max])
 
+        # Defines what actions are possible
         self.action_space = spaces.Box(low=-self.max_force, high=self.max_force, shape=(1,), dtype=np.float32)
         self.observation_space = spaces.Box(-high, high, dtype=np.float32)
 
@@ -57,13 +61,14 @@ class CartPoleContinuousEnv(gym.Env):
         force = u[0]
         costheta = np.cos(theta)
         sintheta = np.sin(theta)
+        
         temp = (force + self.polemass_length * theta_dot * theta_dot * sintheta) / self.total_mass
         thetaacc = (self.gravity * sintheta - costheta* temp) / (self.length * (4.0/3.0 - self.masspole * costheta * costheta / self.total_mass))
         xacc  = temp - self.polemass_length * thetaacc * costheta / self.total_mass
         
-        # The order in which the velocity/position updated were switched according to this issue
+        # The order in which the velocity/position updated were switched according to this issue:
         # https://github.com/openai/gym/issues/907
-        # Original CartPole updates them in this order: x, x_dot, theta, theta_dot
+        # See original CartPole in Gym for traditional order
         x_dot = x_dot + self.tau * xacc
         x  = x + self.tau * x_dot
         theta_dot = theta_dot + self.tau * thetaacc
@@ -97,25 +102,29 @@ class CartPoleContinuousEnv(gym.Env):
         return self.state, reward, done, {}
 
     def reset(self):
-        # Instantiate the cart almost upright
+        # Instantiate the cart with random, reasonable values
         x = np.random.uniform(low=-3,high=3)
         x_dot = np.random.uniform(low=-3,high=3)
-        
-        # These should be able to solve without having to flip the pendulum down to the bottom
         theta = np.random.uniform(low=-np.pi/3, high=np.pi/3)
         theta_dot = np.random.uniform(low=-np.pi/6,high=np.pi/6)
         self.state = [x, x_dot, theta, theta_dot]
+        
+        # For testing you may want to hard-code some kind of default state
+        # If so, simply uncomment this line and change the values as you see fit.
+        # self.state = [0, 0, 0.25, 0]
+        
         self.steps_beyond_done = None
         return np.array(self.state)
 
     def render(self, mode='human'):
+        # Mess with this function at your own risk.
         screen_width = 1000
         world_width = self.x_threshold/4
         scale = screen_width/world_width
         
         carty = scale / 1.25 # TOP OF CART
         polewidth = scale / 12
-        polelen = scale * 1.0
+        polelen = scale
         cartwidth = scale / 2.5
         cartheight = scale / 4
         
@@ -164,20 +173,8 @@ class StochasticCartPoleContinuousEnv(CartPoleContinuousEnv):
     """
     def __init__(self):
         super().__init__()
-        self.masscart = 100000.0
-        # Change to be other things
-        self.masscart = np.random.uniform(low=0.8, high=1.2)
-        self.masspole = 0.1
+        # This may be a bit too random, to be determined
+        self.masscart = np.random.uniform(low=0.5, high=2.5)
+        
+        # Update total_mass because it depends on masscart
         self.total_mass = (self.masspole + self.masscart)
-
-    #def seed(self, seed=None):
-    #    return super(CartPoleContinuousEnv, self).seed(seed)
-    
-    #def state_eq(self, st, u):
-    #    return super(CartPoleContinuousEnv, self).state_eq(st, u)
-    
-    #def step(self, action):
-    #    return super(CartPoleContinuousEnv, self).step(action)
-    
-    #def render(self, mode='human'):
-    #    return super(CartPoleContinuousEnv, self).render(mode)
