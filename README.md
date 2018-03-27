@@ -10,9 +10,9 @@ Make sure you have gym installed following the instructions found [here](https:/
 
 Clone this repository and do a local installation with the following commands:
 ```
-git clone https://MitchProbst/ACME-GymEnvs
+git clone https://github.com/MitchProbst/ACME-GymEnvs
 cd ACME-GymEnvs
-pip install -e
+pip install -e .
 ```
 Note: You do not have to pip install the environment, but if you do not pip install you will need to put the [acme_gym](https://github.com/MitchProbst/ACME-GymEnvs/tree/master/acme_gym) folder in the parent directory of whatever solution file you are going to use.
 
@@ -28,8 +28,8 @@ observation = env.reset()
 print(observation)
 env.render()
 
-# Push the cart to the right with a force of 1
-new_obs, reward, done, info = env.step(np.array([1]))
+# Push the cart to the right with a force of 20
+new_obs, reward, done, info = env.step(np.array([20]))
 env.render()
 
 # call env.close() at the end of a file to terminate the viewing window
