@@ -16,7 +16,7 @@ pip install -e .
 ```
 Note: You do not have to pip install the environment, but if you do not pip install you will need to put the [acme_gym](https://github.com/MitchProbst/ACME-GymEnvs/tree/master/acme_gym) folder in the parent directory of whatever solution file you are going to use.
 
-You can test that you have installed it correctly by running a python script like the following:
+You can test that you have installed it correctly by running a python script like the following (see end of README for a couple common troubleshooting issues):
 ```
 import gym, acme_gym
 import numpy as np
